@@ -1,110 +1,113 @@
-# Robust PCA for COVID-19 Case Trends  
-### Comparing Convex (PCP) and Non-Convex (IRCUR) Methods Under Different Temporal Aggregation Scales
+📌 COVID-19 RPCA Project
 
-This repository contains all Python code used to preprocess COVID-19 case data,
-run convex and non-convex Robust Principal Component Analysis (RPCA)
-decompositions, and generate all figures presented in the project report.
+Robust PCA comparison on global COVID-19 data using:
 
+Convex PCP
 
-## 📁 Repository Structure
+Non-convex IRCUR RPCA (from a public robust-pca GitHub repo)
+
+Weekly and daily matrices are decomposed into low-rank (trend) and sparse (anomaly) components to study case dynamics across continents and WHO regions.
+
+🧩 Project Structure
 covid-vax-project/
 │
-├── data/ # Cleaned weekly & daily matrices
-├── preprocessing/ # Scripts for OWID loading & weekly aggregation
-├── robustpca/ # PCP and IRCUR algorithm implementations copied from https://github.com/sverdoot
-│ ├── pcp.py
-│ ├── ircur.py
-│ ├── utils.py
+├── preprocessing/
+│   └── build_weekly_matrices.py
 │
-├── plots/ # Generated figures (low-rank and sparse components)
-│ ├── continents_daily_lowrank_pcp_ircurr.png
-│ ├── continents_sparse_weeklymean_pcp_ircurr.png
-│ └── ...
+├── robustpca/           # cloned/adapted GitHub repo
+│   ├── ircur.py
+│   ├── pcp.py
+│   └── utils.py
 │
-├── run_pcp_covid.py # Driver script for PCP on continents & WHO
-├── run_ircur_covid.py # Driver script for IRCUR (non-convex) RPCA
-│
-└── README.md # This document
+├── run_pcp_covid.py
+├── run_ircur_covid.py
+├── plots/
+│   └── *.png
+└── data/
+    └── *.csv
 
+🌱 Requirements
 
-## ⚙️ Requirements
+Python 3.10–3.12
 
-All code is tested using:
+NumPy
 
-- Python 3.10–3.12  
-- NumPy  
-- SciPy  
-- Pandas  
-- Matplotlib  
+SciPy
 
-## Install dependencies:
+Pandas
 
-```bash
+Matplotlib
+
+Install everything:
+
 pip install -r requirements.txt
 
 🚀 Running the Experiments
-1. Preprocess the data
+1. Build the weekly matrices
 python preprocessing/build_weekly_matrices.py
 
 2. Run convex RPCA (PCP)
 python run_pcp_covid.py
 
 
-This generates:
+Generates:
 
 *_lowrank_pcp.csv
 
 *_sparse_pcp.csv
 
-corresponding plots under plots/.
+plots in plots/
 
 3. Run non-convex RPCA (IRCUR)
 python run_ircur_covid.py
 
 
-This produces:
+Produces:
 
-*_lowrank_ircurr.csv
+*_lowrank_ircur.csv
 
-*_sparse_ircurr.csv
+*_sparse_ircur.csv
 
-IRCUR-based figures.
+IRCUR plots in plots/
 
 📊 Figures
 
-The repository includes:
+Includes:
 
-Daily vs Weekly low-rank trends
+Daily vs Weekly low-rank comparisons
 
-Daily vs Weekly sparse components
+Daily vs Weekly sparse comparisons
 
 PCP vs IRCUR comparisons
 
-Vaccination vs case-trend visualizations (context only)
+Weekly vaccination-vs-cases plots (context only)
 
-All figures used in the report are reproducible from the included scripts.
+All figures in the paper are reproducible from the scripts in this repository.
 
-🔍 Notes on the Non-Convex Method (IRCUR)
+🔍 Non-Convex Method (IRCUR)
 
-This project uses an IRCUR implementation adapted from a public robust PCA
-repository. IRCUR behaves as a non-convex RPCA algorithm that approximates
-low-rank structure using CUR-based sampling and iterative thresholding.
+This project uses an IRCUR implementation adapted from the public robust-pca GitHub repository:
+👉 https://github.com/sverdoot/robust-pca
 
-Although theoretically capable of sharper rank selection, IRCUR showed
-instability on noisy epidemiological data, as documented in the report.
+IRCUR behaves as a non-convex RPCA algorithm that approximates low-rank structure using:
 
-📑 Citation (not available right now)
+CUR-based submatrix sampling
 
-## Contact:
-Feel free to open issues or contact me if you want to extend or adapt the code.
+iterative thresholding
+
+truncated SVD on sampled rows/columns
+
+Although capable of stronger rank selection, IRCUR exhibited instability on noisy epidemiological data, as documented in the report.
+
+📚 Citation
+
+If you use this code in academic work, please cite the original repository:
+
+@sverdoot-robustpca
+https://github.com/sverdoot/robust-pca
+
+📬 Contact
+
+Feel free to open an issue or email me:
 Sadia Afrin Dipa
-Email: dipacoumath@gmail.com
-
-
-
-
-
-
-
-
-
+📧 dipacoumath@gmail.com
